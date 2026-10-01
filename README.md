@@ -6,6 +6,12 @@ Leia também o artigo [Como fiz uma IA local rodar bem numa placa de vídeo de 3
 
 **Summanus** é um app desktop em Rust para conversar com modelos GGUF locais. O nome vem da [divindade romana associada ao trovão noturno](https://ora.ox.ac.uk/objects/uuid:0a487637-5cef-4436-b58e-455f84c0331e). A identidade visual combina azul profundo, coral e lilás, com [símbolo vetorial](assets/summanus-mark.svg), ilustração própria e componentes arredondados. O motor de inferência continua sendo o `llama-server` oficial do `llama.cpp`.
 
+## Interface
+
+![Janela inicial do Summanus com a barra lateral, o compositor e o indicador de contexto](assets/summanus-app.png)
+
+*Captura da tela inicial com dados de demonstração e sem carregar o modelo.*
+
 ## Funcionalidades
 
 - Respostas em streaming com Markdown, títulos, listas, texto em destaque, código inline e blocos com crases triplas. Fórmulas LaTeX são renderizadas em Rust a partir de `$$...$$`, `\[...\]`, `\(...\)`, `$...$` e `[/.../]`, com botão para copiar a expressão.
