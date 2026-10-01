@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 580" role="img" aria-labelledby="title desc">
+  <title id="title">Medições da velocidade em três níveis de VRAM já ocupada</title>
+  <desc id="desc">No perfil Q4 de 8K, com cache q8_0, a geração foi de 12,7 tokens por segundo com 531 MiB de VRAM já ocupada, 12,4 com 858 MiB e 4,0 com 1095 MiB. O ponto exato da queda está entre os dois últimos níveis testados.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101b40"/><stop offset="1" stop-color="#192651"/></linearGradient>
+    <style>
+      text { font-family: Inter, Segoe UI, Arial, sans-serif; fill: #eff4ff; }
+      .tag { fill: #cfdcff; font-size: 16px; letter-spacing: 1.2px; font-weight: 700; }
+      .head { font-size: 29px; font-weight: 700; }
+      .small { fill: #becdeb; font-size: 18px; }
+      .number { font-size: 28px; font-weight: 700; }
+    </style>
+  </defs>
+  <rect width="1280" height="580" rx="30" fill="url(#bg)"/>
+  <text x="62" y="65" class="tag">CALIBRAÇÃO REAL · Q4 · CONTEXTO 8K · CACHE q8_0</text>
+  <text x="62" y="106" class="head">Mais VRAM ocupada: onde a geração despenca?</text>
+  <text x="62" y="143" class="small">Uso de outros programas antes de carregar o modelo →</text>
+
+  <rect x="78" y="182" width="1120" height="298" rx="22" fill="#24345f" stroke="#6f82bc" stroke-width="2"/>
+  <path d="M150 424H1138" stroke="#8fa4d3" stroke-width="2"/>
+  <path d="M150 244H1138" stroke="#506695" stroke-width="2" stroke-dasharray="7 8"/>
+  <text x="99" y="249" class="small">12</text>
+  <text x="113" y="432" class="small">0</text>
+  <text x="99" y="221" class="small">tokens/s</text>
+
+  <rect x="246" y="236" width="170" height="188" rx="11" fill="#83bdf6"/>
+  <rect x="554" y="241" width="170" height="183" rx="11" fill="#a39ef6"/>
+  <rect x="862" y="365" width="170" height="59" rx="11" fill="#ff947f"/>
+  <text x="275" y="224" class="number">12,7</text>
+  <text x="583" y="229" class="number">12,4</text>
+  <text x="928" y="352" class="number">4,0</text>
+  <text x="291" y="455" class="small">531 MiB</text>
+  <text x="599" y="455" class="small">858 MiB</text>
+  <text x="891" y="455" class="small">1.095 MiB</text>
+
+  <path d="M640 510H946" stroke="#ffab9a" stroke-width="3"/>
+  <path d="M640 503V517M946 503V517" stroke="#ffab9a" stroke-width="3"/>
+  <text x="472" y="549" class="small">O limite exato ficou entre o último teste rápido e o primeiro lento.</text>
+</svg>

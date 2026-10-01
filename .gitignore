@@ -1,5 +1,8 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+target/
+data/
+cache/
 *.py[codz]
 *$py.class
 

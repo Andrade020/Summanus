@@ -1,0 +1,3 @@
+# Saídas das calibrações (logs do servidor e .jsonl): específicas de cada PC
+resultados/
+__pycache__/

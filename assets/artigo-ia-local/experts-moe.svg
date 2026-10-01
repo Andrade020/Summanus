@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 540" role="img" aria-labelledby="title desc">
+  <title id="title">Como um modelo MoE usa parte dos experts a cada token</title>
+  <desc id="desc">Muitos blocos de experts ficam na RAM. Alguns aparecem destacados e seguem para a CPU, que os processa para o token atual. A quantidade de blocos desenhada é ilustrativa.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101b40"/><stop offset="1" stop-color="#192651"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#aec7f8"/></marker>
+    <style>
+      text { font-family: Inter, Segoe UI, Arial, sans-serif; fill: #eff4ff; }
+      .tag { fill: #cfdcff; font-size: 16px; letter-spacing: 1.2px; font-weight: 700; }
+      .head { font-size: 29px; font-weight: 700; }
+      .label { font-size: 23px; font-weight: 700; }
+      .small { fill: #becdeb; font-size: 18px; }
+    </style>
+  </defs>
+  <rect width="1280" height="540" rx="30" fill="url(#bg)"/>
+  <text x="62" y="65" class="tag">MISTURA DE ESPECIALISTAS · MoE</text>
+  <text x="62" y="105" class="head">Muitos pesos guardados; uma parte trabalha por token</text>
+
+  <rect x="60" y="150" width="640" height="318" rx="24" fill="#24345f" stroke="#6f82bc" stroke-width="2"/>
+  <text x="90" y="192" class="tag">RAM</text>
+  <text x="90" y="225" class="label">Experts do modelo</text>
+  <text x="90" y="253" class="small">Os blocos corais representam os selecionados agora.</text>
+  <g fill="#7f9cdd">
+    <rect x="92" y="292" width="72" height="56" rx="10"/><rect x="180" y="292" width="72" height="56" rx="10"/><rect x="268" y="292" width="72" height="56" rx="10"/><rect x="356" y="292" width="72" height="56" rx="10"/><rect x="444" y="292" width="72" height="56" rx="10"/><rect x="532" y="292" width="72" height="56" rx="10"/>
+    <rect x="92" y="368" width="72" height="56" rx="10"/><rect x="180" y="368" width="72" height="56" rx="10"/><rect x="268" y="368" width="72" height="56" rx="10"/><rect x="356" y="368" width="72" height="56" rx="10"/><rect x="444" y="368" width="72" height="56" rx="10"/><rect x="532" y="368" width="72" height="56" rx="10"/>
+  </g>
+  <g fill="#ff9a86"><rect x="180" y="292" width="72" height="56" rx="10"/><rect x="444" y="292" width="72" height="56" rx="10"/><rect x="356" y="368" width="72" height="56" rx="10"/></g>
+
+  <path d="M710 310H780" fill="none" stroke="#aec7f8" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="731" y="284" class="small">usa</text>
+
+  <rect x="795" y="188" width="424" height="242" rx="24" fill="#2b365e" stroke="#e497aa" stroke-width="2"/>
+  <text x="828" y="231" class="tag">CPU</text>
+  <text x="828" y="269" class="label">Calcula os selecionados</text>
+  <text x="828" y="302" class="small">A cada novo token, a seleção muda.</text>
+  <g fill="#ff9a86"><rect x="830" y="340" width="64" height="52" rx="9"/><rect x="909" y="340" width="64" height="52" rx="9"/><rect x="988" y="340" width="64" height="52" rx="9"/></g>
+  <text x="62" y="505" class="small">Neste modelo: cerca de 35B de parâmetros no total e 3B ativos por token.</text>
+</svg>

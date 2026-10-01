@@ -1,77 +1,72 @@
-# Local_LLM
+# Summanus
 
-A desktop GUI (Python/Tkinter) for running LLMs fully locally, offline, on your own PC. It's powered by `llama.cpp`: the app starts the official `llama-server` binary in the background and chats with it.
+Leia também o artigo [Como fiz uma IA local rodar bem numa placa de vídeo de 3 GB](docs/IA_LOCAL_PC_FRACO.md), que conta os testes e as decisões de configuração em linguagem acessível.
 
-Using the official binary instead of `llama-cpp-python` means new model architectures work right away (e.g. Qwen3.6 MoE), CUDA works on older NVIDIA GPUs (GTX 10xx / Pascal), and you get MoE expert offload to the CPU (`--n-cpu-moe`), which is what lets a 35B model run fast on a 3 GB GPU.
+**Summanus** é um app desktop em Rust para conversar com modelos GGUF locais. O nome vem da [divindade romana associada ao trovão noturno](https://ora.ox.ac.uk/objects/uuid:0a487637-5cef-4436-b58e-455f84c0331e). A identidade visual combina azul profundo, coral e lilás, com [símbolo vetorial](assets/summanus-mark.svg), ilustração própria e componentes arredondados. O motor de inferência continua sendo o `llama-server` oficial do `llama.cpp`.
 
-## What's new in v2.0
+## Funcionalidades
 
-This is a new version of the app. Version 1.0 ran models in-process through `llama-cpp-python`, CPU only. v2.0 changes:
+- Respostas em streaming com Markdown, títulos, listas, texto em destaque, código inline e blocos com crases triplas. Fórmulas LaTeX são renderizadas em Rust a partir de `$$...$$`, `\[...\]`, `\(...\)`, `$...$` e `[/.../]`, com botão para copiar a expressão.
+- Botão para copiar a resposta inteira e botão separado para cada bloco de código.
+- Histórico de conversas salvo automaticamente em `data/state.json`, com busca, seleção, confirmação de exclusão e exportação em Markdown, JSON ou texto.
+- Sugestões de início para explorar ideias, escrever e programar; `Ctrl+N` abre uma nova conversa.
+- Mapa de contextos: salve recortes por intervalo de mensagens, dê título e anotação, edite o resumo ou peça ao modelo para gerá-lo. Marque resumos como referências para os próximos envios. Quando existe um resumo do início da conversa, o mais recente substitui automaticamente as mensagens antigas nos próximos envios. A conversa completa só volta a ser enviada ao escolher **Usar conversa inteira**. As mensagens originais continuam visíveis e exportáveis.
+- Barra de contexto com quantidade de tokens e capacidade configurada. Com o modelo carregado, o app consulta o tokenizador do servidor; durante a digitação e antes da resposta, mostra uma estimativa provisória.
+- Antes de enviar, o app espera a contagem real do tokenizador. Quando sobra uma margem pequena, de até 5% do contexto, pausa o envio e oferece compactar o histórico ou reiniciar o modelo com contexto maior. Se houver histórico seguro para resumir e você não escolher em 30 segundos, compacta automaticamente, mede de novo e continua. Texto e anexos permanecem no compositor se a medição ou o resumo falhar.
+- Importação local de texto e código: escolha o arquivo inteiro, um intervalo de linhas ou uma função de um `.py` (inclusive métodos e funções com decoradores). A prévia permite percorrer o corpo inteiro da função. Dados `data:...;base64,...` são removidos de HTML. O app avisa antes de anexar trechos grandes, sem cortá-los automaticamente.
+- Modo raciocínio com painel recolhível; controles de temperatura, Top P, penalidade de repetição, presence penalty, limite de tokens e hardware.
+- Velocidade real em tokens/s destacada abaixo da barra de contexto e salva em cada resposta, conforme a medição final do servidor; botão para interromper a geração.
+- Cache opcional que distingue modelo, histórico e parâmetros. Desligado por padrão porque respostas amostradas podem variar.
+- O servidor permanece carregado entre mensagens. A aplicação usa um único slot e solicita reaproveitamento do prompt ao `llama-server`.
 
-- **New backend:** the app now drives `llama-server` from the official `llama.cpp` releases, with GPU offload and MoE expert offload. `llama-cpp-python` is no longer a dependency.
-- **Real chat:** the full conversation history is sent using the model's own chat template. v1.0 sent only the last message as a raw prompt.
-- **Thinking mode** for Qwen3.x models, with the reasoning shown separately from the answer.
-- **Tokens/s** in the status bar, and a working **Stop** button.
-- **Hardware settings in `config.env`:** `LLAMA_SERVER_PATH`, `N_GPU_LAYERS`, `N_CPU_MOE`, `N_CTX`, `N_THREADS`, `ENABLE_THINKING`. The `DEFAULT_*` inference values are now applied too.
-- **Fixed memory check:** v1.0 overestimated RAM for i-quants, and it ignored mmap and VRAM.
-- **Recommended model** changed from Llama-2 to Qwen3.6-35B-A3B.
-- **`config.env` is no longer tracked:** it holds machine-specific paths. Copy it from `config.example.env`.
+## Instalação no Windows
 
-## Quick Start
+1. Instale [Rust](https://rustup.rs/) e um compilador C para Windows: Visual Studio Build Tools com C++ (MSVC) ou MSYS2 com `mingw-w64-x86_64-gcc`.
+2. Baixe o `llama-server.exe` em [llama.cpp Releases](https://github.com/ggml-org/llama.cpp/releases). Para NVIDIA GTX 10xx, use o build CUDA 12.4 e o pacote `cudart` correspondente. Escolha um build compatível com o seu hardware.
+3. Copie `config.example.env` para `config.env` e ajuste `LLAMA_SERVER_PATH` e `MODEL_PATH`.
+4. Execute `iniciar.bat`. Na primeira execução ele compila o app; depois abre o executável já criado. Para compilar manualmente, use `build.bat`.
 
-1. Download `llama.cpp` from [Releases](https://github.com/ggml-org/llama.cpp/releases) and unzip it:
-   - NVIDIA GTX 10xx (Pascal): `llama-bXXXX-bin-win-cuda-12.4-x64.zip` **and** `cudart-llama-bin-win-cuda-12.4-x64.zip` (CUDA 13 no longer supports Pascal)
-   - Newer NVIDIA: the `cuda-13.x` builds; AMD/Intel: `win-vulkan`; no GPU: `win-cpu`
-2. Download a GGUF model (see below).
-3. Set up and run:
+O app carrega automaticamente o modelo do perfil escolhido, inclusive se você abrir o `.exe` diretamente. No perfil **Automático**, usa a indicação do recomendador. `MODEL_PATH` é o modelo base dos perfis Q4 e o fallback se o recomendador falhar. Você também pode clicar em **Trocar modelo**; a escolha fica salva no modo personalizado. Use `iniciar.bat --model caminho\modelo.gguf` para selecionar outro modelo temporariamente.
+Use `iniciar.bat --no-auto-model` para abrir apenas a interface sem ocupar a GPU.
 
-```bash
-git clone https://github.com/Andrade020/Local_LLM.git
-cd Local_LLM
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-copy config.example.env config.env   # then edit LLAMA_SERVER_PATH and MODEL_PATH
-python main.py                        # or double-click iniciar.bat
-```
+## Perfis de execução
 
-The model in `MODEL_PATH` is loaded automatically when the app starts. You can also load one from **Arquivo → Carregar Modelo**.
+Antes de carregar o modelo, o app executa `%USERPROFILE%\Desktop\LLM\recomendar.bat --json --ignorar-servidor`. A recomendação usa a VRAM, a RAM e a CPU livres naquele momento. O `.bat` não pausa quando recebe `--json`, para permitir a chamada pelo app. O perfil **Automático** é o padrão; a sugestão e os recursos medidos aparecem na janela **Perfis**. Se o script falhar, o app usa os valores de `config.env`. Clique em **Reavaliar PC e reiniciar** após abrir ou fechar programas pesados. A reavaliação descarrega o modelo antes de medir novamente.
 
-Requires Python 3.9+ and Tkinter (bundled with Python on Windows/macOS; on Linux install it separately, e.g. `sudo apt-get install python3-tk`).
+Se o script estiver em outro lugar, defina `SUMMANUS_RECOMMENDER_PATH` com o caminho completo do `.bat`. A variável antiga `LOCAL_LLM_RECOMMENDER_PATH` continua aceita para preservar configurações existentes. O app mantém a escolha manual de perfil entre aberturas e continua executando o recomendador para mostrar a sugestão atual.
 
-## Recommended model: Qwen3.6-35B-A3B
+| Perfil | Modelo e configuração |
+| --- | --- |
+| A · Rápido | Q4, 16K, `-ctk q8_0 -ctv q8_0` |
+| B · Contexto livre | Q4, 32K, `-ctk q8_0 -ctv q8_0 -ot output.weight=CPU` |
+| C · Atual | Q4, 32K, `-ctk q8_0 -ctv q8_0` |
+| Q3 · Ágil | IQ3, 32K, `N_CPU_MOE=39`, cache Q8 e `--load-mode none` |
+| Q3 · Poupar VRAM | IQ3, 16K, saída na CPU e `N_CPU_MOE=41` |
+| Paciente | Q4, 48K, só CPU, raciocínio ligado e limite inicial de pelo menos 8192 tokens de resposta |
 
-A MoE model with 35B total parameters and only 3B active per token (MMLU-Pro 85, GPQA 86). Tested on a Ryzen 5 1600 + GTX 1060 3GB + 16 GB single-channel DDR4:
+O perfil escolhido fica salvo em `data/state.json`; o arquivo `config.env` continua como base e não é sobrescrito. Todos os perfis com arquivo de modelo presente podem ser selecionados manualmente. O app avisa em vermelho quando o uso atual de RAM/VRAM indica lentidão ou risco de falha ao carregar. Os valores de tokens por segundo mostrados pelo recomendador são estimativas, não uma medição do app. Trocar de perfil reinicia o servidor, mas mantém as conversas. Escolher um arquivo em **Trocar modelo** passa para o modo personalizado.
 
-| Model | Config | Generation |
-|---|---|---|
-| [Qwen3.6-35B-A3B UD-IQ3_XXS](https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF) (12-13 GB) | `N_GPU_LAYERS=99`, `N_CPU_MOE=40`, `N_THREADS=12`, `N_CTX=32768` | **~11-12 tokens/s** |
-| Qwen3.5-4B Q4_K_M (2.5 GB) | CPU only | ~4 tokens/s |
+No compositor, **Enviar · Ctrl+Enter** indica o atalho de envio. A caixa **Raciocínio** controla apenas o modo de resposta. O texto digitado usa a cor clara da interface.
 
-On low-RAM-bandwidth machines, a MoE model with a small number of active parameters is much faster than a dense 7-9B model and much smarter.
+Na importação, cada arquivo de origem pode ter até 8 MB. Acima de 1000 linhas, 60 mil caracteres ou da capacidade estimada do contexto, o app pede confirmação para anexar o trecho inteiro. Um arquivo novo que sozinho não cabe no contexto não pode ser compactado automaticamente sem perder detalhes; escolha um trecho menor ou amplie o contexto. Os trechos são cópias do conteúdo no momento do envio, sem leitura automática posterior do arquivo. O resumo por IA também pode ser solicitado manualmente em **Resumir com IA**.
 
-## Features
+## Desempenho
 
-- Chat with full conversation history using the model's own chat template
-- Thinking mode (Qwen3.x): the reasoning is shown in gray, separate from the answer, and can be turned on/off in **Configurações**
-- Tokens/s shown in the status bar after each answer
-- Model validation and memory check before loading (accounts for mmap and GPU VRAM)
-- Response caching and conversation export (txt/json/md)
+As opções `N_GPU_LAYERS`, `N_CPU_MOE`, `N_CTX`, `N_THREADS` e `N_THREADS_BATCH` do `config.env` são encaminhadas ao `llama-server`. A interface permite ajustá-las durante a sessão e recarregar o modelo. Um contexto menor reduz o uso de memória; mais camadas na GPU podem acelerar a geração se houver VRAM suficiente. Em modelos MoE, `N_CPU_MOE` ajuda a manter experts na RAM quando a VRAM é limitada. Os melhores valores dependem do computador e do modelo.
 
-## Configuration
+`ENABLE_THINKING` define o estado inicial do raciocínio em cada abertura. Com ele desligado, o presence penalty começa em `1.5` (ou no valor de `DEFAULT_PRESENCE_PENALTY`, se definido). O ajuste também está disponível na interface e é enviado à API do servidor.
 
-Copy `config.example.env` to `config.env` and adjust as needed:
+Coloque `LLAMA_SERVER_EXTRA_ARGS` entre aspas quando tiver espaços, por exemplo `LLAMA_SERVER_EXTRA_ARGS="-ctk q8_0 -ctv q8_0"`. O app mostra um erro se não conseguir ler o arquivo de configuração.
 
-| Variable | Purpose |
-|---|---|
-| `LLAMA_SERVER_PATH` | Path to `llama-server.exe` |
-| `MODEL_PATH` | Path to the `.gguf` model file to load |
-| `N_GPU_LAYERS` | Layers offloaded to the GPU (`99` = all, `0` = CPU only) |
-| `N_CPU_MOE` | MoE models: number of layers whose experts stay on the CPU. With little VRAM, start at the model's layer count and lower it while it still fits |
-| `N_CTX`, `N_THREADS` | Context size and CPU threads |
-| `LLAMA_SERVER_EXTRA_ARGS` | Any extra `llama-server` flags |
-| `ENABLE_THINKING` | Default for thinking mode (`true`/`false`) |
-| `DEFAULT_TEMPERATURE`, `DEFAULT_TOP_P`, `DEFAULT_MAX_TOKENS`, `DEFAULT_REPEAT_PENALTY` | Default inference parameters |
-| `CACHE_DIR`, `LOG_LEVEL`, `LOG_FILE` | Cache directory and logging |
+O Rust controla a interface, o histórico, o cache e o cliente HTTP. O cálculo dos tokens continua no `llama.cpp`; trocar a interface por Rust não altera diretamente a velocidade matemática do modelo. O reaproveitamento do prompt pode reduzir o tempo para começar respostas seguintes, dependendo do servidor e do histórico.
 
-The `llama-server` output is written to `logs/llama-server.log`. You can also pass `--model`, `--config`, or `--debug` directly to `python main.py` (see `main.py --help`).
+O servidor é iniciado com `--no-context-shift`. A compactação troca o histórico enviado ao modelo por um resumo, enquanto as mensagens originais continuam salvas e podem voltar ao contexto com **Usar conversa inteira**. Se a ampliação do contexto falhar ao carregar, o app restaura a configuração anterior e tenta compactar o histórico.
+
+## Arquivos
+
+- `config.env`: configuração local, não versionada.
+- `data/state.json`: histórico, configurações de geração e último modelo escolhido.
+- `logs/llama-server.log`: saída do servidor para diagnóstico.
+- `cache/`: respostas salvas quando o cache está ativado.
+
+O app Python anterior continua no repositório para referência, mas `iniciar.bat` abre a versão Rust.

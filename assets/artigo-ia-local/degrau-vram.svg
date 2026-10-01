@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 590" role="img" aria-labelledby="title desc">
+  <title id="title">O cache KV compacto evita ultrapassar a VRAM no teste de 32K</title>
+  <desc id="desc">Dois painéis com a mesma capacidade de VRAM. No teste com cache f16, uma barra excede a capacidade e a geração mede 4,2 tokens por segundo. Com cache q8_0, a barra cabe e a geração mede entre 12,6 e 14,3 tokens por segundo. Larguras dos segmentos são ilustrativas.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101b40"/><stop offset="1" stop-color="#192651"/></linearGradient>
+    <style>
+      text { font-family: Inter, Segoe UI, Arial, sans-serif; fill: #eff4ff; }
+      .tag { fill: #cfdcff; font-size: 16px; letter-spacing: 1.2px; font-weight: 700; }
+      .head { font-size: 29px; font-weight: 700; }
+      .label { font-size: 24px; font-weight: 700; }
+      .small { fill: #becdeb; font-size: 18px; }
+    </style>
+  </defs>
+  <rect width="1280" height="590" rx="30" fill="url(#bg)"/>
+  <text x="62" y="65" class="tag">MESMA GPU · CONTEXTO CONFIGURADO EM 32K</text>
+  <text x="62" y="106" class="head">O cache KV decide se tudo cabe na VRAM</text>
+
+  <rect x="60" y="150" width="560" height="354" rx="24" fill="#24345f" stroke="#e497aa" stroke-width="2"/>
+  <text x="88" y="198" class="tag">CACHE f16</text>
+  <text x="88" y="233" class="label">Ultrapassou o limite</text>
+  <text x="88" y="267" class="small">Capacidade disponível da GPU</text>
+  <rect x="90" y="294" width="450" height="76" rx="10" fill="none" stroke="#d2dcfa" stroke-width="3" stroke-dasharray="9 7"/>
+  <rect x="96" y="300" width="85" height="64" rx="5" fill="#63789f"/>
+  <rect x="181" y="300" width="173" height="64" rx="5" fill="#a29df5"/>
+  <rect x="354" y="300" width="186" height="64" rx="5" fill="#7cbbfa"/>
+  <rect x="540" y="300" width="49" height="64" rx="5" fill="#ff927f"/>
+  <path d="M540 283V381" stroke="#ffb2a5" stroke-width="3"/>
+  <text x="88" y="419" class="small">Parte excedente vai para memória compartilhada.</text>
+  <text x="88" y="472" font-size="29" font-weight="700" fill="#ffab9a">4,2 tokens/s</text>
+
+  <rect x="660" y="150" width="560" height="354" rx="24" fill="#24345f" stroke="#8ba8f5" stroke-width="2"/>
+  <text x="688" y="198" class="tag">CACHE q8_0</text>
+  <text x="688" y="233" class="label">Coube na mesma GPU</text>
+  <text x="688" y="267" class="small">Mesma capacidade disponível</text>
+  <rect x="690" y="294" width="450" height="76" rx="10" fill="none" stroke="#d2dcfa" stroke-width="3" stroke-dasharray="9 7"/>
+  <rect x="696" y="300" width="85" height="64" rx="5" fill="#63789f"/>
+  <rect x="781" y="300" width="173" height="64" rx="5" fill="#a29df5"/>
+  <rect x="954" y="300" width="118" height="64" rx="5" fill="#7cbbfa"/>
+  <text x="688" y="419" class="small">O cache menor deixa uma margem de VRAM.</text>
+  <text x="688" y="472" font-size="29" font-weight="700" fill="#9fcaff">12,6–14,3 tokens/s</text>
+
+  <g font-size="17"><rect x="72" y="532" width="19" height="19" rx="4" fill="#63789f"/><text x="101" y="548">outros programas</text><rect x="300" y="532" width="19" height="19" rx="4" fill="#a29df5"/><text x="329" y="548">pesos e buffers</text><rect x="531" y="532" width="19" height="19" rx="4" fill="#7cbbfa"/><text x="560" y="548">cache KV</text></g>
+  <text x="790" y="548" class="small">Larguras ilustrativas; velocidades medidas.</text>
+</svg>
