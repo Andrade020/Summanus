@@ -1,5 +1,0 @@
-{
-  "cache_key": "57dfc315b4f4ce20b9f36f46570544fb048bf871667979ca927eecdd29b878e2",
-  "response": "\n\nfrom matplotlib.pyplot import plot, xlabel, ylabel\nimport numpy as np\n\n# Exemplo de dados para ilustrar\nx = [1, 2, 3, 4, 5]\ny = [2, 4, 6, 8, 10]\n\n# Plotando o gráfico sem eixos\nplot(x, y)\nxlabel('X')\nylabel('Y')\n\n# Adicionando legend\nlegend((x, y), 'Dados')\n\n# Mostrando o gráfico\nshow()\n\nEste código irá criar um gráfico sem eixos, apenas com os labels X e Y, e uma legenda com o título \"Dados\". Você pode alterar os valores dos dados para ilustrar diferentes tipos de gráficos.",
-  "timestamp": null
-}
