@@ -1,6 +1,6 @@
 # Summanus — identidade visual
 
-**Ideia:** um clarão no centro de uma órbita. Summanus é associado ao trovão noturno na tradição romana; o contraste entre o fundo escuro e o núcleo coral representa uma resposta que surge no próprio computador. A órbita sugere exploração.
+**Ideia:** um clarão no centro de uma órbita. [Summanus](https://ora.ox.ac.uk/objects/uuid:0a487637-5cef-4436-b58e-455f84c0331e) é associado ao trovão noturno na tradição romana; o contraste entre o fundo escuro e o núcleo coral representa uma resposta que surge no próprio computador. A órbita sugere exploração.
 
 | Papel | Cor |
 |---|---|

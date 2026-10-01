@@ -1,5 +1,7 @@
 # Summanus
 
+<img src="assets/summanus-mark.svg" alt="Símbolo do Summanus" width="96">
+
 Leia também o artigo [Como fiz uma IA local rodar bem numa placa de vídeo de 3 GB](docs/IA_LOCAL_PC_FRACO.md), que conta os testes e as decisões de configuração em linguagem acessível.
 
 **Summanus** é um app desktop em Rust para conversar com modelos GGUF locais. O nome vem da [divindade romana associada ao trovão noturno](https://ora.ox.ac.uk/objects/uuid:0a487637-5cef-4436-b58e-455f84c0331e). A identidade visual combina azul profundo, coral e lilás, com [símbolo vetorial](assets/summanus-mark.svg), ilustração própria e componentes arredondados. O motor de inferência continua sendo o `llama-server` oficial do `llama.cpp`.
