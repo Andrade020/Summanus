@@ -1,0 +1,14 @@
+name: CI
+on:
+  push: { branches: [main] }
+  pull_request:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+      - name: Compilar
+        run: cargo build --release
+      - name: Testes
+        run: cargo test --release

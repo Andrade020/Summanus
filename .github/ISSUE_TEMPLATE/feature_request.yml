@@ -1,0 +1,14 @@
+name: Sugestão de funcionalidade
+description: Uma ideia para melhorar o projeto
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Qual problema isso resolve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Como você imagina a solução?
