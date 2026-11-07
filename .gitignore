@@ -6,7 +6,6 @@ cache/
 *.py[codz]
 *$py.class
 
-C:\Users\LucasRafaeldeAndrade\Desktop\Repositorios\Local_LLM\models
 # C extensions
 *.so
 
@@ -31,7 +30,6 @@ share/python-wheels/
 MANIFEST
 models/
 .models/
-models\llama-2-7b-chat.Q4_K_M.gguf
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.

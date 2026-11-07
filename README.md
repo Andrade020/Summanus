@@ -27,6 +27,10 @@ Leia também o artigo [Como fiz uma IA local rodar bem numa placa de vídeo de 3
 - Cache opcional que distingue modelo, histórico e parâmetros. Desligado por padrão porque respostas amostradas podem variar.
 - O servidor permanece carregado entre mensagens. A aplicação usa um único slot e solicita reaproveitamento do prompt ao `llama-server`.
 
+## Download
+
+Baixe o `summanus-v*-windows-x64.zip` mais recente na página de [Releases](https://github.com/Andrade020/Summanus/releases), extraia e siga os passos 2 e 3 abaixo (o `llama-server.exe` e o modelo GGUF são baixados à parte). Para compilar você mesmo, use a seção seguinte.
+
 ## Instalação no Windows
 
 1. Instale [Rust](https://rustup.rs/) e um compilador C para Windows: Visual Studio Build Tools com C++ (MSVC) ou MSYS2 com `mingw-w64-x86_64-gcc`.
